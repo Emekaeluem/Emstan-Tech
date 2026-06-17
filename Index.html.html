@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emstan Tech | Brand & Digital Design Studio</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN for minimalist geometric icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepTeal: '#003135',
+                        richTeal: '#024950',
+                        brightCyan: '#0FA4AF',
+                        softAqua: '#AFDDE5',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'infinite-scroll': 'infinite-scroll 25s linear infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        'infinite-scroll': {
+                            from: { transform: 'translateX(0)' },
+                            to: { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Glassmorphism Utility */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(175, 221, 229, 0.6);
+        }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(175, 221, 229, 0.4);
+        }
+
+        /* Ensure smooth horizontal constraints on dynamic mobile displays */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Scroll-trigger Reveal Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Subtle ambient blur shapes */
+        .ambient-glow-1 {
+            background: radial-gradient(circle, rgba(15, 164, 175, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+
+        .ambient-glow-2 {
+            background: radial-gradient(circle, rgba(175, 221, 229, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+    </style>
+</head>
+<body class="bg-white font-sans text-richTeal selection:bg-softAqua selection:text-deepTeal overflow-x-hidden antialiased">
+
+    <!-- Ambient Glow Background Blobs -->
+    <div class="absolute top-[10%] left-[-10%] w-[50vw] h-[50vw] rounded-full ambient-glow-1 pointer-events-none -z-10"></div>
+    <div class="absolute top-[40%] right-[-10%] w-[60vw] h-[60vw] rounded-full ambient-glow-2 pointer-events-none -z-10"></div>
+
+    <!-- Fixed Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="https://wa.link/l89ge1" class="flex items-center gap-2 group">
+                <span class="font-extrabold text-2xl tracking-tight text-deepTeal group-hover:text-brightCyan transition-colors duration-300">
+                    EMSTAN<span class="text-brightCyan">.</span>
+                </span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center gap-10">
+                <a href="#services" class="text-sm font-medium tracking-wide text-deepTeal hover:text-brightCyan transition-colors duration-300">Services</a>
+                <a href="#ai-strategist-section" class="text-sm font-medium tracking-wide text-deepTeal hover:text-brightCyan transition-colors duration-300">AI Strategist</a>
+                <a href="#process" class="text-sm font-medium tracking-wide text-deepTeal hover:text-brightCyan transition-colors duration-300">How We Work</a>
+                <a href="#why-us" class="text-sm font-medium tracking-wide text-deepTeal hover:text-brightCyan transition-colors duration-300">Why Us</a>
+            </div>
+
+            <!-- Desktop CTA -->
+            <div class="hidden md:block">
+                <a href="https://wa.link/l89ge1" class="inline-flex items-center justify-center px-6 py-3 border border-deepTeal text-xs font-semibold uppercase tracking-wider text-deepTeal hover:bg-deepTeal hover:text-white transition-all duration-300 rounded-none">
+                    Start Project 
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" class="md:hidden flex items-center text-deepTeal focus:outline-none" aria-label="Toggle Menu">
+                <i data-lucide="menu" id="menu-icon" class="w-6 h-6 transition-transform duration-300"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer - Responsive mobile layout adjustments -->
+        <div id="mobile-menu" class="hidden md:hidden fixed top-20 left-0 w-full h-[calc(100vh-80px)] bg-white/95 backdrop-blur-lg flex flex-col justify-between p-8 border-t border-softAqua/40 z-40 transition-all duration-300">
+            <div class="flex flex-col gap-8 pt-6">
+                <a href="#services" class="mobile-link text-2xl font-bold text-deepTeal hover:text-brightCyan transition-colors">Services</a>
+                <a href="#ai-strategist-section" class="mobile-link text-2xl font-bold text-deepTeal hover:text-brightCyan transition-colors">AI Strategist</a>
+                <a href="#process" class="mobile-link text-2xl font-bold text-deepTeal hover:text-brightCyan transition-colors">How We Work</a>
+                <a href="#why-us" class="mobile-link text-2xl font-bold text-deepTeal hover:text-brightCyan transition-colors">Why Us</a>
+            </div>
+            <div class="pb-12">
+                <a href="https://wa.link/l89ge1" class="w-full inline-flex items-center justify-center py-4 bg-deepTeal text-white font-semibold tracking-wider hover:bg-richTeal transition-all duration-300">
+                    Start Project
+                    <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Optimized spacing and typography size for mobile screens -->
+    <section class="relative min-h-screen flex items-center pt-28 pb-16 md:pt-32 md:pb-20 px-6 lg:px-12 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
+            <div class="lg:col-span-10 xl:col-span-9 flex flex-col justify-center">
+                <!-- Tagline Badge -->
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-softAqua/30 border border-softAqua w-fit mb-8 animate-fade-in">
+                    <span class="w-2 h-2 rounded-full bg-brightCyan animate-ping"></span>
+                    <span class="text-xs uppercase tracking-widest font-bold text-deepTeal">Premium Digital Studio</span>
+                </div>
+
+                <!-- Headline - Highly responsive fluid font-scaling -->
+                <h1 class="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-deepTeal tracking-tight leading-[1.1] sm:leading-[1.05] mb-8 break-words">
+                    Your Brand Deserves to Look Like <span class="text-transparent bg-clip-text bg-gradient-to-r from-deepTeal via-richTeal to-brightCyan">the Future.</span>
+                </h1>
+
+                <!-- Subheadline -->
+                <p class="text-lg sm:text-xl md:text-2xl text-richTeal font-light leading-relaxed max-w-3xl mb-12">
+                    End-to-end brand and digital design for fintech, lifestyle, and service brands. From logo to live website — cohesive, modern, and built to convert.
+                </p>
+
+                <!-- Dual CTAs -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="https://wa.link/l89ge1" class="inline-flex items-center justify-center px-8 py-4 bg-deepTeal text-white text-sm font-semibold uppercase tracking-wider hover:bg-richTeal transition-all duration-300 shadow-lg shadow-deepTeal/10 group">
+                        Start Your Project
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"></i>
+                    </a>
+                    <a href="#ai-strategist-section" class="inline-flex items-center justify-center px-8 py-4 border-2 border-deepTeal text-deepTeal text-sm font-semibold uppercase tracking-wider hover:bg-deepTeal hover:text-white transition-all duration-300">
+                        Try AI Strategist
+                        <i data-lucide="cpu" class="w-4 h-4 ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <section class="border-y border-softAqua/40 py-6 md:py-8 bg-neutral-50/50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-xs uppercase tracking-widest font-bold text-richTeal/60 shrink-0">
+                Studio Reach & Clients
+            </div>
+            
+            <!-- Infinite horizontal marquee/slider -->
+            <div class="w-full overflow-hidden relative">
+                <div class="flex gap-12 text-sm font-medium tracking-wide text-richTeal whitespace-nowrap animate-infinite-scroll">
+                    <span>Fintech Startups Across Nigeria</span>
+                    <span class="text-brightCyan">•</span>
+                    <span>Lifestyle Brands Worldwide</span>
+                    <span class="text-brightCyan">•</span>
+                    <span>Service Businesses in Lagos</span>
+                    <span class="text-brightCyan">•</span>
+                    <span>International Markets</span>
+                    <span class="text-brightCyan">•</span>
+                    <!-- Duplicate list for seamless looping -->
+                    <span>Fintech Startups Across Nigeria</span>
+                    <span class="text-brightCyan">•</span>
+                    <span>Lifestyle Brands Worldwide</span>
+                    <span class="text-brightCyan">•</span>
+                    <span>Service Businesses in Lagos</span>
+                    <span class="text-brightCyan">•</span>
+                    <span>International Markets</span>
+                    <span class="text-brightCyan">•</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section - Spacing optimized for mobile devices -->
+    <section id="services" class="py-16 md:py-32 px-6 lg:px-12 max-w-7xl mx-auto scroll-mt-24">
+        <!-- Section Header -->
+        <div class="reveal mb-12 md:mb-20">
+            <p class="text-xs uppercase tracking-widest font-black text-brightCyan mb-3">WHAT WE BUILD</p>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-deepTeal tracking-tight">
+                Design Services Built to Deliver & Transform
+            </h2>
+            <div class="w-20 h-1 bg-deepTeal mt-6"></div>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Service 1 -->
+            <div class="reveal glass-card p-6 sm:p-8 group hover:-translate-y-2 transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-softAqua/40 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 flex items-center justify-center bg-softAqua/30 text-deepTeal mb-8 rounded-none group-hover:bg-brightCyan group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="swatchbook" class="w-6 h-6 stroke-[1.5]"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-deepTeal mb-4">Brand Identity</h3>
+                    <p class="text-richTeal/80 font-light leading-relaxed text-sm">
+                        Logo design, color systems, typography, and full brand guidelines that scale beautifully.
+                    </p>
+                </div>
+                <div class="mt-8 border-t border-softAqua/40 pt-4 flex justify-between items-center text-xs font-bold uppercase tracking-wider text-deepTeal">
+                    <span>Learn More</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"></i>
+                </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="reveal glass-card p-6 sm:p-8 group hover:-translate-y-2 transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-softAqua/40 flex flex-col justify-between" style="transition-delay: 100ms;">
+                <div>
+                    <div class="w-12 h-12 flex items-center justify-center bg-softAqua/30 text-deepTeal mb-8 rounded-none group-hover:bg-brightCyan group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="laptop" class="w-6 h-6 stroke-[1.5]"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-deepTeal mb-4">Web Design</h3>
+                    <p class="text-richTeal/80 font-light leading-relaxed text-sm">
+                        Custom WordPress and HTML/CSS sites — highly optimized, interactive, responsive, and completely on-brand.
+                    </p>
+                </div>
+                <div class="mt-8 border-t border-softAqua/40 pt-4 flex justify-between items-center text-xs font-bold uppercase tracking-wider text-deepTeal">
+                    <span>Learn More</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"></i>
+                </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="reveal glass-card p-6 sm:p-8 group hover:-translate-y-2 transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-softAqua/40 flex flex-col justify-between" style="transition-delay: 200ms;">
+                <div>
+                    <div class="w-12 h-12 flex items-center justify-center bg-softAqua/30 text-deepTeal mb-8 rounded-none group-hover:bg-brightCyan group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="play" class="w-6 h-6 stroke-[1.5]"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-deepTeal mb-4">Motion Graphics</h3>
+                    <p class="text-richTeal/80 font-light leading-relaxed text-sm">
+                        Animated assets, loopable visual designs, and dynamic video components that tell your story in seconds.
+                    </p>
+                </div>
+                <div class="mt-8 border-t border-softAqua/40 pt-4 flex justify-between items-center text-xs font-bold uppercase tracking-wider text-deepTeal">
+                    <span>Learn More</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"></i>
+                </div>
+            </div>
+
+            <!-- Service 4 -->
+            <div class="reveal glass-card p-6 sm:p-8 group hover:-translate-y-2 transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-softAqua/40 flex flex-col justify-between" style="transition-delay: 300ms;">
+                <div>
+                    <div class="w-12 h-12 flex items-center justify-center bg-softAqua/30 text-deepTeal mb-8 rounded-none group-hover:bg-brightCyan group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="hash" class="w-6 h-6 stroke-[1.5]"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-deepTeal mb-4">Social Systems</h3>
+                    <p class="text-richTeal/80 font-light leading-relaxed text-sm">
+                        Cohesive visual systems, bespoke design grids, and layouts to ensure complete brand consistency online.
+                    </p>
+                </div>
+                <div class="mt-8 border-t border-softAqua/40 pt-4 flex justify-between items-center text-xs font-bold uppercase tracking-wider text-deepTeal">
+                    <span>Learn More</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section CTA Link -->
+        <div class="reveal mt-16 text-center">
+            <a href="https://wa.link/l89ge1" class="inline-flex items-center text-deepTeal hover:text-brightCyan font-bold tracking-wider uppercase text-xs group transition-all duration-300">
+                Discuss Your Project With Us
+                <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Interactive AI Brand Strategist Section -->
+    <section id="ai-strategist-section" class="py-16 md:py-32 px-6 lg:px-12 max-w-7xl mx-auto scroll-mt-24 relative overflow-hidden">
+        <!-- Ambient decorative shapes inside interactive portal -->
+        <div class="absolute -top-10 -left-10 w-72 h-72 bg-softAqua/20 rounded-full blur-3xl pointer-events-none -z-10"></div>
+        <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-brightCyan/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+        <!-- Section Header -->
+        <div class="reveal mb-12 md:mb-16">
+            <p class="text-xs uppercase tracking-widest font-black text-brightCyan mb-3">INSTANT BRIEF PORTAL</p>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-deepTeal tracking-tight">
+                Emstan AI Brand Strategist
+            </h2>
+            <p class="text-richTeal/80 font-light mt-4 text-base sm:text-lg max-w-2xl">
+                Test our brand thinking in real time. Select your profile details, and our custom-trained Gemini AI creative strategist will assemble an immediate high-end visual direction framework.
+            </p>
+            <div class="w-20 h-1 bg-deepTeal mt-6"></div>
+        </div>
+
+        <!-- Interactive Hub Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Side: Custom Input Panel -->
+            <div class="reveal lg:col-span-5 glass-card p-6 sm:p-8 flex flex-col gap-6">
+                <div>
+                    <h3 class="text-lg font-bold text-deepTeal flex items-center gap-2">
+                        <i data-lucide="sliders" class="w-5 h-5 text-brightCyan"></i>
+                        Identify Your Brand Profile
+                    </h3>
+                    <p class="text-xs text-richTeal/70 font-light mt-1">
+                        Help Gemini structure its architectural creative output.
+                    </p>
+                </div>
+
+                <!-- Input form variables -->
+                <div class="flex flex-col gap-4">
+                    <!-- Brand Name / Industry -->
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-deepTeal tracking-wider mb-2">Business Name & Industry</label>
+                        <input id="brand-industry" type="text" placeholder="e.g. Apexpay - Fintech Startup" 
+                               class="w-full px-4 py-3 bg-white/70 border border-softAqua text-sm focus:outline-none focus:border-brightCyan text-deepTeal transition-all duration-300">
+                    </div>
+
+                    <!-- Target Market Audience -->
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-deepTeal tracking-wider mb-2">Target Market Audience</label>
+                        <select id="brand-audience" class="w-full px-4 py-3 bg-white/70 border border-softAqua text-sm focus:outline-none focus:border-brightCyan text-deepTeal transition-all duration-300">
+                            <option value="Young tech professionals and Gen Z">Young Professionals & Gen Z</option>
+                            <option value="Corporate leaders and enterprise partners">Corporate Leaders & Enterprise</option>
+                            <option value="High-net-worth investors and luxury consumers">Premium Luxury Markets</option>
+                            <option value="Local small businesses and retail consumers">Retail & Community Consumers</option>
+                        </select>
+                    </div>
+
+                    <!-- Design Vibes & Personality -->
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-deepTeal tracking-wider mb-2">Aesthetic & Vibe Personality</label>
+                        <select id="brand-vibe" class="w-full px-4 py-3 bg-white/70 border border-softAqua text-sm focus:outline-none focus:border-brightCyan text-deepTeal transition-all duration-300">
+                            <option value="Ultra-Minimalist Swiss typography, heavy contrast, and high-tech elegance">Swiss Minimalist</option>
+                            <option value="Bold cybertech, bright gradients, neon highlights, and premium dark theme">Cybertech / Fintech Bold</option>
+                            <option value="Classic, organic warmth, refined lifestyle textures, editorial layouts">Classic Lifestyle Editorial</option>
+                            <option value="Playful, modern typography, bright pastel overlays, approachable shapes">Friendly Modern Approachable</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Run Strategist Trigger Button -->
+                <button id="run-ai-strategist" class="w-full inline-flex items-center justify-center py-4 bg-deepTeal text-white font-semibold text-xs tracking-wider uppercase hover:bg-richTeal transition-all duration-300 group">
+                    <span>Generate AI Brand Strategy</span>
+                    <i data-lucide="cpu" class="w-4 h-4 ml-2 group-hover:scale-110 transition-transform duration-300"></i>
+                </button>
+            </div>
+
+            <!-- Right Side: Gemini Interactive Output Viewer -->
+            <div class="reveal lg:col-span-7 w-full flex flex-col gap-6" style="transition-delay: 100ms;">
+                <!-- Result Interface Console -->
+                <div class="glass-card min-h-[460px] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-500">
+                    
+                    <!-- Preloading state panel (visible by default, hidden on generation) -->
+                    <div id="ai-blank-state" class="absolute inset-0 z-10 flex flex-col items-center justify-center p-8 text-center bg-white/50 backdrop-blur-md transition-opacity duration-300">
+                        <div class="w-16 h-16 rounded-full bg-softAqua/40 border border-softAqua flex items-center justify-center mb-6">
+                            <i data-lucide="sparkles" class="w-8 h-8 text-brightCyan animate-pulse"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-deepTeal">Your Design Direction Awaits</h4>
+                        <p class="text-sm text-richTeal/80 font-light mt-2 max-w-sm">
+                            Configure your brand settings on the left and run our engine. Our Creative Strategist Gemini model will deliver a curated layout schema.
+                        </p>
+                    </div>
+
+                    <!-- Live Dynamic Generating State (hidden by default) -->
+                    <div id="ai-generating-state" class="absolute inset-0 z-10 hidden flex flex-col items-center justify-center p-8 text-center bg-white/80 backdrop-blur-md transition-opacity duration-300">
+                        <div class="relative w-16 h-16 mb-6">
+                            <div class="absolute inset-0 rounded-full border-4 border-softAqua/40 border-t-brightCyan animate-spin"></div>
+                            <div class="absolute inset-2 rounded-full border border-dashed border-deepTeal animate-spin-slow"></div>
+                        </div>
+                        <h4 id="ai-loading-header" class="text-xl font-bold text-deepTeal">Connecting with Gemini AI</h4>
+                        <p id="ai-loading-sub" class="text-sm text-richTeal/80 font-light mt-2 max-w-xs">
+                            Architecting bespoke layout strategy...
+                        </p>
+                    </div>
+
+                    <!-- Rendered content container (displays output cleanly) -->
+                    <div id="ai-results-content" class="w-full flex flex-col gap-6 opacity-0 transition-opacity duration-500">
+                        <!-- Top Line -->
+                        <div class="flex items-center justify-between border-b border-softAqua/50 pb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-1 text-[10px] uppercase font-extrabold tracking-widest text-deepTeal bg-softAqua/50 border border-softAqua">System Drafted Brief</span>
+                            </div>
+                            <span class="text-[10px] uppercase font-bold text-richTeal/60 flex items-center gap-1">
+                                <i data-lucide="clock" class="w-3.5 h-3.5"></i> Live Concept Output
+                            </span>
+                        </div>
+
+                        <!-- Main Grid Elements generated -->
+                        <div class="flex flex-col gap-6">
+                            <!-- Brand concept header statement -->
+                            <div>
+                                <h5 class="text-[10px] uppercase font-black text-brightCyan tracking-wider mb-1">Core Identity Concept</h5>
+                                <p id="brief-concept" class="text-lg sm:text-xl font-extrabold text-deepTeal leading-snug">
+                                    "A futuristic, ultra-modern identity focused on effortless consumer asset transfer."
+                                </p>
+                            </div>
+
+                            <!-- Visual design direction column -->
+                            <div>
+                                <h5 class="text-[10px] uppercase font-black text-brightCyan tracking-wider mb-1">Visual Direction & Styling</h5>
+                                <p id="brief-visual" class="text-xs sm:text-sm text-richTeal/90 font-light leading-relaxed">
+                                    Heavy visual hierarchy anchored by oversized typographic headlines. High-contrast monochromatic grids paired with vivid cyan glows capture attention immediately on mobile devices.
+                                </p>
+                            </div>
+
+                            <!-- Dual segment info: curated palette & sitemap outline -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                                <!-- Suggested Swatch Colors -->
+                                <div>
+                                    <h5 class="text-[10px] uppercase font-black text-brightCyan tracking-wider mb-2">Curated Hex Palette</h5>
+                                    <div id="brief-colors-container" class="flex flex-wrap gap-2">
+                                        <!-- Will render color squares dynamically -->
+                                    </div>
+                                </div>
+
+                                <!-- Recommended Sitemap Section -->
+                                <div>
+                                    <h5 class="text-[10px] uppercase font-black text-brightCyan tracking-wider mb-1">Sitemap Architecture</h5>
+                                    <ul id="brief-sitemap-list" class="space-y-1 text-xs text-richTeal/80 list-disc pl-4 font-light">
+                                        <!-- Will render sitemap components dynamic -->
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Brand taglines suggestion -->
+                            <div class="border-t border-softAqua/40 pt-4">
+                                <h5 class="text-[10px] uppercase font-black text-brightCyan tracking-wider mb-2">Suggested Website Taglines</h5>
+                                <div id="brief-taglines-list" class="grid grid-cols-1 gap-2">
+                                    <!-- Dynamic text blocks render -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom interaction button links -->
+                        <div class="border-t border-softAqua/40 pt-6 flex flex-col sm:flex-row gap-3">
+                            <button id="copy-ai-brief" class="flex-1 py-3 border border-deepTeal text-xs font-semibold uppercase tracking-wider text-deepTeal hover:bg-deepTeal hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
+                                <i data-lucide="clipboard" class="w-4 h-4"></i>
+                                <span>Copy Brief System</span>
+                            </button>
+                            <a id="ai-whatsapp-cta" href="https://wa.link/l89ge1" class="flex-1 py-3 bg-brightCyan text-white text-xs font-bold uppercase tracking-wider hover:bg-deepTeal transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brightCyan/10">
+                                <i data-lucide="message-square" class="w-4 h-4"></i>
+                                <span>Design Brief with Emstan</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-16 md:py-32 bg-neutral-50/50 border-y border-softAqua/30 scroll-mt-24">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <!-- Section Header -->
+            <div class="reveal mb-12 md:mb-24 max-w-3xl">
+                <p class="text-xs uppercase tracking-widest font-black text-brightCyan mb-3">HOW WE WORK</p>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-deepTeal tracking-tight leading-tight">
+                    A Predictable & Polished Method To Our Design Magic
+                </h2>
+                <p class="text-richTeal font-light mt-4 text-lg">
+                    We structure our workflow rigorously to secure clear alignment, top-shelf results, and zero-headache deployment.
+                </p>
+            </div>
+
+            <!-- Horizontal Timeline / Step Process Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-8 relative">
+                <!-- Step 1 -->
+                <div class="reveal flex flex-col relative">
+                    <span class="text-5xl md:text-7xl font-extralight text-softAqua tracking-tight mb-2 md:mb-4">01</span>
+                    <h3 class="text-xl font-bold text-deepTeal mb-3">Discover</h3>
+                    <p class="text-richTeal/80 font-light text-sm leading-relaxed pr-4">
+                        We learn your market, goals, audience desires, and exactly what sets your core brand apart.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="reveal flex flex-col relative" style="transition-delay: 100ms;">
+                    <span class="text-5xl md:text-7xl font-extralight text-softAqua tracking-tight mb-2 md:mb-4">02</span>
+                    <h3 class="text-xl font-bold text-deepTeal mb-3">Design</h3>
+                    <p class="text-richTeal/80 font-light text-sm leading-relaxed pr-4">
+                        Visual identity patterns and high-performance digital mockups uniquely crafted to compete globally.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="reveal flex flex-col relative" style="transition-delay: 200ms;">
+                    <span class="text-5xl md:text-7xl font-extralight text-softAqua tracking-tight mb-2 md:mb-4">03</span>
+                    <h3 class="text-xl font-bold text-deepTeal mb-3">Develop</h3>
+                    <p class="text-richTeal/80 font-light text-sm leading-relaxed pr-4">
+                        Websites built cleanly on optimized, custom architectures and deployed, fully responsive, for peak performance.
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="reveal flex flex-col relative" style="transition-delay: 300ms;">
+                    <span class="text-5xl md:text-7xl font-extralight text-softAqua tracking-tight mb-2 md:mb-4">04</span>
+                    <h3 class="text-xl font-bold text-deepTeal mb-3">Deliver</h3>
+                    <p class="text-richTeal/80 font-light text-sm leading-relaxed pr-4">
+                        A clean, polished system handed over complete with guides you can independently own and scale safely.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CTA Container inside Process -->
+            <div class="reveal mt-20 flex justify-center">
+                <a href="https://wa.link/l89ge1" class="inline-flex items-center justify-center px-10 py-4 bg-deepTeal text-white text-xs font-bold uppercase tracking-wider hover:bg-richTeal transition-all duration-300">
+                    Start a Project with Emstan Tech
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Emstan Tech Section -->
+    <section id="why-us" class="py-16 md:py-32 px-6 lg:px-12 max-w-7xl mx-auto scroll-mt-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-start">
+            <!-- Left Info Block -->
+            <div class="reveal lg:col-span-5">
+                <p class="text-xs uppercase tracking-widest font-black text-brightCyan mb-3">WHY EMSTAN TECH</p>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-deepTeal tracking-tight leading-tight">
+                    Built for Brands That Move
+                </h2>
+                <p class="text-richTeal/95 font-light leading-relaxed mt-6 text-base sm:text-lg">
+                    We combine rigorous design logic with top-tier technology execution. No loose ends, no communication gaps — just world-class design.
+                </p>
+                
+                <div class="mt-8">
+                    <a href="https://wa.link/l89ge1" class="inline-flex items-center text-deepTeal hover:text-brightCyan font-bold uppercase text-xs tracking-wider group transition-all duration-300">
+                        Let's Talk Design Strategy
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Visual Features Stack -->
+            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Value Prop 1 -->
+                <div class="reveal glass-card p-6 sm:p-8 hover:border-brightCyan/60 transition-colors duration-300">
+                    <div class="w-10 h-10 flex items-center justify-center text-brightCyan mb-6 bg-white border border-softAqua">
+                        <i data-lucide="infinity" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-deepTeal mb-2">End-to-End Execution</h3>
+                    <p class="text-richTeal/80 font-light text-xs sm:text-sm leading-relaxed">
+                        One continuous collaborative partner across strategy, prototyping, design, and direct deployment. Zero handoff friction.
+                    </p>
+                </div>
+
+                <!-- Value Prop 2 -->
+                <div class="reveal glass-card p-6 sm:p-8 hover:border-brightCyan/60 transition-colors duration-300" style="transition-delay: 100ms;">
+                    <div class="w-10 h-10 flex items-center justify-center text-brightCyan mb-6 bg-white border border-softAqua">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-deepTeal mb-2">Fintech & Lifestyle Focus</h3>
+                    <p class="text-richTeal/80 font-light text-xs sm:text-sm leading-relaxed">
+                        In-depth domain understanding of consumer trust, fast-paced regulation, and aesthetic-driven target markets.
+                    </p>
+                </div>
+
+                <!-- Value Prop 3 -->
+                <div class="reveal glass-card p-6 sm:p-8 hover:border-brightCyan/60 transition-colors duration-300" style="transition-delay: 200ms;">
+                    <div class="w-10 h-10 flex items-center justify-center text-brightCyan mb-6 bg-white border border-softAqua">
+                        <i data-lucide="globe" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-deepTeal mb-2">Nigeria-Rooted, Globally Ready</h3>
+                    <p class="text-richTeal/80 font-light text-xs sm:text-sm leading-relaxed">
+                        Distinctive designs that land locally with perfect resonance, built strictly to global quality and performance standards.
+                    </p>
+                </div>
+
+                <!-- Value Prop 4 -->
+                <div class="reveal glass-card p-6 sm:p-8 hover:border-brightCyan/60 transition-colors duration-300" style="transition-delay: 300ms;">
+                    <div class="w-10 h-10 flex items-center justify-center text-brightCyan mb-6 bg-white border border-softAqua">
+                        <i data-lucide="cpu" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-deepTeal mb-2">Technical + Creative</h3>
+                    <p class="text-richTeal/80 font-light text-xs sm:text-sm leading-relaxed">
+                        Not just high fidelity visuals. Expertly programmed WordPress architecture, modern HTML, CSS grids, and motion pipelines that actually work.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="py-12 md:py-24 px-6 lg:px-12 bg-white relative">
+        <div class="max-w-7xl mx-auto">
+            <!-- Glass container - Responsive padding optimized for small touch screens -->
+            <div class="reveal glass-card px-6 py-12 sm:p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-softAqua/30">
+                <!-- Inner glow shape inside glass card -->
+                <div class="absolute -bottom-1/2 -right-1/4 w-[600px] h-[600px] rounded-full ambient-glow-1 pointer-events-none"></div>
+                
+                <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+                    <p class="text-xs uppercase tracking-widest font-black text-brightCyan mb-4">LETS SHAPE THE FUTURE</p>
+                    <h2 class="text-2xl sm:text-5xl md:text-6xl font-black text-deepTeal tracking-tight leading-tight mb-8">
+                        Ready for a Brand That Works as Hard as You Do?
+                    </h2>
+                    <p class="text-base sm:text-xl text-richTeal/90 font-light leading-relaxed max-w-2xl mb-12">
+                        Let's build your visual identity, responsive web layouts, and motion assets — carefully executed from start to finish.
+                    </p>
+                    
+                    <a href="https://wa.link/l89ge1" class="inline-flex items-center justify-center px-10 py-5 bg-brightCyan text-white text-xs font-bold uppercase tracking-wider hover:bg-deepTeal transition-all duration-300 shadow-xl shadow-brightCyan/20 group">
+                        Book a Free Discovery Call
+                        <i data-lucide="phone-call" class="w-4 h-4 ml-2 group-hover:scale-110 transition-transform duration-300"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-deepTeal text-white pt-16 md:pt-24 pb-12 px-6 lg:px-12 border-t border-richTeal">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
+                <!-- Col 1: Brand Info -->
+                <div class="md:col-span-5">
+                    <div class="font-extrabold text-3xl tracking-tight text-white mb-6">
+                        EMSTAN<span class="text-brightCyan">.</span>
+                    </div>
+                    <p class="text-softAqua/80 font-light text-sm max-w-sm leading-relaxed mb-8">
+                        A minimalist digital design studio crafting high-converting identity systems and elite products for modern fintech, consumer, and corporate brands.
+                    </p>
+                    <!-- CTA Link -->
+                    <a href="https://wa.link/l89ge1" class="inline-flex items-center gap-2 px-5 py-3 border border-brightCyan text-xs font-bold uppercase tracking-wider text-brightCyan hover:bg-brightCyan hover:text-deepTeal transition-all duration-300">
+                        Chat on WhatsApp
+                        <i data-lucide="message-square" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div class="md:col-span-3">
+                    <h4 class="text-xs uppercase tracking-widest font-bold text-brightCyan mb-6">Quick Navigation</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#services" class="text-sm text-softAqua/80 hover:text-white transition-colors">Design Services</a></li>
+                        <li><a href="#ai-strategist-section" class="text-sm text-softAqua/80 hover:text-white transition-colors">AI Strategist</a></li>
+                        <li><a href="#process" class="text-sm text-softAqua/80 hover:text-white transition-colors">How We Work</a></li>
+                        <li><a href="#why-us" class="text-sm text-softAqua/80 hover:text-white transition-colors">Why Emstan Tech</a></li>
+                        <li><a href="https://wa.link/l89ge1" class="text-sm text-softAqua/80 hover:text-white transition-colors">Connect / Inquire</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Contact Info -->
+                <div class="md:col-span-4">
+                    <h4 class="text-xs uppercase tracking-widest font-bold text-brightCyan mb-6">Get In Touch</h4>
+                    <ul class="space-y-4 text-sm text-softAqua/80">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-4 h-4 text-brightCyan"></i>
+                            <a href="mailto:eluemstanley@gmail.com" class="hover:text-white transition-colors">eluemstanley@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-4 h-4 text-brightCyan"></i>
+                            <a href="tel:09086107932" class="hover:text-white transition-colors">09086107932</a>
+                        </li>
+                    </ul>
+                    <div class="mt-8">
+                        <h5 class="text-xs uppercase tracking-widest font-bold text-brightCyan mb-4">Follow Studio</h5>
+                        <div class="flex gap-4">
+                            <a href="https://wa.link/l89ge1" class="p-2 border border-richTeal hover:border-brightCyan text-softAqua/80 hover:text-brightCyan transition-all duration-300" aria-label="Instagram">
+                                <i data-lucide="instagram" class="w-4 h-4"></i>
+                            </a>
+                            <a href="https://wa.link/l89ge1" class="p-2 border border-richTeal hover:border-brightCyan text-softAqua/80 hover:text-brightCyan transition-all duration-300" aria-label="TikTok">
+                                <span class="text-xs font-bold block leading-none h-4 flex items-center">TT</span>
+                            </a>
+                            <a href="https://wa.link/l89ge1" class="p-2 border border-richTeal hover:border-brightCyan text-softAqua/80 hover:text-brightCyan transition-all duration-300" aria-label="Facebook">
+                                <i data-lucide="facebook" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright and bottom credits -->
+            <div class="border-t border-richTeal/60 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-softAqua/60 font-light">
+                <p>&copy; 2026 Emstan Tech. All Rights Reserved.</p>
+                <div class="flex gap-6">
+                    <a href="https://wa.link/l89ge1" class="hover:underline">Privacy Policy</a>
+                    <a href="https://wa.link/l89ge1" class="hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Page Scripting -->
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Responsive Navigation Drawer Logic
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.setAttribute('data-lucide', 'x');
+                document.body.style.overflow = 'hidden'; // prevent scroll lock background
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.setAttribute('data-lucide', 'menu');
+                document.body.style.overflow = '';
+            }
+            lucide.createIcons();
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        // Intersection Observer for Premium Fade-in Animations on Scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Add scrolled class styling effect on navbar scroll height & adjust mobile menu position dynamically
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg', 'shadow-deepTeal/5', 'h-16');
+                nav.classList.remove('h-20');
+                if (mobileMenu) {
+                    mobileMenu.classList.add('top-16');
+                    mobileMenu.classList.remove('top-20');
+                    mobileMenu.style.height = 'calc(100vh - 64px)';
+                }
+            } else {
+                nav.classList.remove('shadow-lg', 'shadow-deepTeal/5', 'h-16');
+                nav.classList.add('h-20');
+                if (mobileMenu) {
+                    mobileMenu.classList.add('top-20');
+                    mobileMenu.classList.remove('top-16');
+                    mobileMenu.style.height = 'calc(100vh - 80px)';
+                }
+            }
+        });
+
+        // AI Strategist Engine Logic
+        const runBtn = document.getElementById('run-ai-strategist');
+        const blankState = document.getElementById('ai-blank-state');
+        const generatingState = document.getElementById('ai-generating-state');
+        const resultsContent = document.getElementById('ai-results-content');
+        const loadHeader = document.getElementById('ai-loading-header');
+        const loadSub = document.getElementById('ai-loading-sub');
+
+        // Results selectors
+        const outConcept = document.getElementById('brief-concept');
+        const outVisual = document.getElementById('brief-visual');
+        const outColors = document.getElementById('brief-colors-container');
+        const outSitemap = document.getElementById('brief-sitemap-list');
+        const outTaglines = document.getElementById('brief-taglines-list');
+        const copyBtn = document.getElementById('copy-ai-brief');
+
+        // Internal brief representation cache
+        let activeBriefRawText = "";
+
+        // Simulated dynamic text loops for loader immersion
+        const loadStatusSteps = [
+            { h: "Tuning Creative Core", s: "Accessing Gemini context models..." },
+            { h: "Analyzing Vibe Profile", s: "Curating bespoke visual aesthetics..." },
+            { h: "Building Wireframes", s: "Generating layout flow sitemaps..." },
+            { h: "Polishing Brand Brief", s: "Writing converting copywriting lines..." }
+        ];
+
+        let loadingInterval = null;
+
+        function startLoaderAnimation() {
+            let stepIndex = 0;
+            blankState.style.opacity = '0';
+            setTimeout(() => { blankState.classList.add('hidden'); }, 300);
+            
+            generatingState.classList.remove('hidden');
+            generatingState.style.opacity = '1';
+
+            loadHeader.innerText = loadStatusSteps[0].h;
+            loadSub.innerText = loadStatusSteps[0].s;
+
+            loadingInterval = setInterval(() => {
+                stepIndex = (stepIndex + 1) % loadStatusSteps.length;
+                loadHeader.innerText = loadStatusSteps[stepIndex].h;
+                loadSub.innerText = loadStatusSteps[stepIndex].s;
+            }, 1800);
+        }
+
+        function stopLoaderAnimation() {
+            if (loadingInterval) {
+                clearInterval(loadingInterval);
+                loadingInterval = null;
+            }
+            generatingState.style.opacity = '0';
+            setTimeout(() => { generatingState.classList.add('hidden'); }, 300);
+        }
+
+        async function fetchGeminiBrandBrief(industry, audience, vibe) {
+            const apiKey = ""; // Left blank, injected automatically in canvas runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const systemPrompt = `You are the Lead Creative Director and Brand Architect at EMSTAN TECH, an elite, minimalist digital design studio. 
+Analyze the customer business variables and respond strictly with a valid JSON document matching the requested schema. 
+Use professional, premium brand guidelines style. Make color hex values look visually stunning and match the vibe exactly. Do not use generic answers.`;
+
+            const userPrompt = `Generate a customized brand brief for my business with these properties:
+- Business Profile & Industry: ${industry}
+- Target Audience: ${audience}
+- Brand Aesthetic & Vibe: ${vibe}
+
+Respond with a JSON object containing the exact properties:
+{
+  "brandConcept": "A powerful one-sentence artistic direction statement for this brand.",
+  "visualDirection": "2-3 sentences explaining typography choices, spacing rules, and CSS elements suited for this company's premium digital page.",
+  "paletteSuggestion": ["HEX1", "HEX2", "HEX3", "HEX4"],
+  "sitemap": ["Home (Section details)", "Core Showcase details", "Interactive Feature brief", "Studio Portal CTA"],
+  "taglines": ["Catchy hero tagline 1", "Inspiring tagline 2", "Conversion CTA tagline 3"]
+}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            brandConcept: { type: "STRING" },
+                            visualDirection: { type: "STRING" },
+                            paletteSuggestion: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            },
+                            sitemap: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            },
+                            taglines: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            }
+                        },
+                        required: ["brandConcept", "visualDirection", "paletteSuggestion", "sitemap", "taglines"]
+                    }
+                },
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            // Call with dynamic Exponential Backoff capability
+            let delay = 1000;
+            const maxRetries = 3;
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) {
+                        throw new Error(`API response state error: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    const textResult = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (textResult) {
+                        return JSON.parse(textResult);
+                    }
+                    throw new Error("Empty candidate part structure returned");
+                } catch (err) {
+                    if (attempt === maxRetries) throw err;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        function getPremiumLocalFallback(industry, audience, vibe) {
+            // Curated local backups ensuring 100% beautiful fail-safe rendering instantly
+            let colors = ["#003135", "#024950", "#0FA4AF", "#AFDDE5"];
+            if (vibe.includes("Swiss")) colors = ["#000000", "#1A1A1A", "#7F7F7F", "#F5F5F5"];
+            else if (vibe.includes("cybertech")) colors = ["#0A0015", "#2D0066", "#0FF0FC", "#FF007F"];
+            else if (vibe.includes("classic")) colors = ["#2F1B12", "#603F26", "#D7C0AE", "#F5EFE6"];
+            
+            return {
+                brandConcept: `\"Crafting an elite, minimalist visual system designed for direct market positioning of ${industry || 'your venture'}.\"`,
+                visualDirection: `Employs robust, high-contrast typography scaling and modular spacing layout rules optimized specifically for ${audience}. Designed on high fidelity Swiss structural standards to guarantee absolute brand credibility.`,
+                paletteSuggestion: colors,
+                sitemap: [
+                    "Hero Stage (Interactive visual landing hook)",
+                    "Strategic Value proposition (Audience metrics breakdown)",
+                    "Immersive Visual Showcase (Dynamic proof section)",
+                    "Direct Action Portal (High-intent WhatsApp redirect)"
+                ],
+                taglines: [
+                    "Engineered for high-performing modern teams.",
+                    "Where minimalist form meets relentless performance.",
+                    "Your identity, refined for the next decade."
+                ]
+            };
+        }
+
+        async function triggerAiStrategist() {
+            const industryInput = document.getElementById('brand-industry').value.trim() || "Emstan Partner";
+            const audienceInput = document.getElementById('brand-audience').value;
+            const vibeInput = document.getElementById('brand-vibe').value;
+
+            startLoaderAnimation();
+
+            try {
+                const result = await fetchGeminiBrandBrief(industryInput, audienceInput, vibeInput);
+                renderResults(result);
+            } catch (error) {
+                console.warn("Gemini Live service status: Offline or Limit reached. Re-routing through local design model.", error);
+                const fallback = getPremiumLocalFallback(industryInput, audienceInput, vibeInput);
+                renderResults(fallback);
+            } finally {
+                stopLoaderAnimation();
+            }
+        }
+
+        function renderResults(brief) {
+            // Write to page structure
+            outConcept.innerText = brief.brandConcept.startsWith('"') ? brief.brandConcept : `"${brief.brandConcept}"`;
+            outVisual.innerText = brief.visualDirection;
+
+            // Render Palette swatches
+            outColors.innerHTML = "";
+            brief.paletteSuggestion.forEach(hex => {
+                const colorContainer = document.createElement('div');
+                colorContainer.className = "flex flex-col items-center gap-1 group/swatch cursor-pointer";
+                
+                const swatch = document.createElement('div');
+                swatch.className = "w-10 h-10 border border-softAqua/80 shadow-inner rounded-none transition-transform duration-300 group-hover/swatch:scale-105";
+                swatch.style.backgroundColor = hex;
+                
+                const hexLabel = document.createElement('span');
+                hexLabel.className = "text-[9px] uppercase font-bold tracking-tight text-richTeal/70";
+                hexLabel.innerText = hex;
+
+                colorContainer.appendChild(swatch);
+                colorContainer.appendChild(hexLabel);
+                outColors.appendChild(colorContainer);
+            });
+
+            // Render Sitemap list
+            outSitemap.innerHTML = "";
+            brief.sitemap.forEach(page => {
+                const li = document.createElement('li');
+                li.className = "hover:text-brightCyan transition-colors duration-200";
+                li.innerText = page;
+                outSitemap.appendChild(li);
+            });
+
+            // Render tagline suggestions
+            outTaglines.innerHTML = "";
+            brief.taglines.forEach(tag => {
+                const tagBlock = document.createElement('div');
+                tagBlock.className = "p-2 bg-softAqua/20 border-l-2 border-brightCyan text-xs italic text-deepTeal font-medium";
+                tagBlock.innerText = `"${tag}"`;
+                outTaglines.appendChild(tagBlock);
+            });
+
+            // Keep cache record for easy copy
+            activeBriefRawText = `EMSTAN TECH AI BRAND BRIEF
+-----------------------------
+Core Concept: ${brief.brandConcept}
+Visual Direction: ${brief.visualDirection}
+Colors Suggestion: ${brief.paletteSuggestion.join(', ')}
+Sitemap Flow:
+${brief.sitemap.map(s => `- ${s}`).join('\n')}
+Proposed Copy Lines:
+${brief.taglines.map(t => `"${t}"`).join('\n')}`;
+
+            // Animate view transition
+            resultsContent.classList.remove('opacity-0');
+            resultsContent.classList.add('opacity-100');
+            
+            // Re-render new dynamic elements
+            lucide.createIcons();
+        }
+
+        // Clipboard Copy Utility (Safe cross-browser legacy fallback)
+        function copyBriefToClipboard() {
+            if (!activeBriefRawText) return;
+            
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = activeBriefRawText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            
+            try {
+                document.execCommand('copy');
+                const originalText = copyBtn.querySelector('span').innerText;
+                copyBtn.querySelector('span').innerText = "Copied to Clipboard!";
+                setTimeout(() => {
+                    copyBtn.querySelector('span').innerText = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error("Could not copy brief text: ", err);
+            } finally {
+                document.body.removeChild(tempTextArea);
+            }
+        }
+
+        // Event Listeners initialization
+        runBtn.addEventListener('click', triggerAiStrategist);
+        copyBtn.addEventListener('click', copyBriefToClipboard);
+    </script>
+</body>
+</html>
